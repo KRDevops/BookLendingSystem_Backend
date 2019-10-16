@@ -18,6 +18,7 @@ import com.ing.bms.dto.UserLoginResponseDTO;
 import com.ing.bms.dto.UserRegisterRequestDTO;
 import com.ing.bms.dto.UserRegisterResponseDTO;
 import com.ing.bms.service.UserService;
+import com.ing.bms.util.BMSUtil;
 
 @RestController
 @CrossOrigin(allowedHeaders = { "*", "*/" }, origins = { "*", "*/" })
@@ -39,6 +40,7 @@ public class UserController {
 	@PostMapping("/login")
 	public ResponseEntity<UserLoginResponseDTO> login(@RequestBody UserLoginRequestDTO userLoginRequestDto) {
 		UserLoginResponseDTO userLoginResponseDto = userService.login(userLoginRequestDto);
+		userLoginResponseDto.setMessage(BMSUtil.LOGIN_SUCCESS);
 		return new ResponseEntity<>(userLoginResponseDto, HttpStatus.OK);
 	}
 

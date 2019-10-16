@@ -1,21 +1,11 @@
 package com.ing.bms.dto;
 
-public class UserLoginRequestDTO {
+import lombok.Getter;
+import lombok.Setter;
 
-	private String userName;
+@Getter
+@Setter
+public class UserLoginRequestDTO {
+	private String emailId;
 	private String password;
-	public String getUserName() {
-		return userName;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	
 }
