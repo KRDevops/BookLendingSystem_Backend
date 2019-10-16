@@ -9,17 +9,25 @@ import org.springframework.stereotype.Service;
 
 import com.ing.bms.dto.BookAddRequestDto;
 import com.ing.bms.dto.BookAddResponseDto;
+import com.ing.bms.dto.BookTransactionRequestDto;
+import com.ing.bms.dto.BookTransactionResponseDto;
 import com.ing.bms.entity.Book;
+import com.ing.bms.entity.Transaction;
 import com.ing.bms.entity.User;
 import com.ing.bms.exception.BookException;
 import com.ing.bms.repository.BookRepository;
 import com.ing.bms.repository.UserRepository;
+
+import lombok.extern.slf4j.Slf4j;
+
+import com.ing.bms.repository.TransactionRepository;
 
 /**
  * @since 2019-10-16 This class includes methods for add a book
  *      
  */
 @Service
+@Slf4j
 public class BookServiceImpl implements BookService{
 
 	@Autowired
@@ -28,16 +36,25 @@ public class BookServiceImpl implements BookService{
 	@Autowired
 	BookRepository bookRepository;
 	
+	@Autowired
+	TransactionRepository transactionRepository;
+	
 	@Value("${user.notfound}")
 	private String userNotFound;
 	
+	@Value("${book.invalid}")
+	private String bookNotFound;
+	
+	
 	/**
 	 * @param bookAddRequestDto
-	 * @return BookAddResponseDto which includes user id,status code and
-	 *         success message. This method will save detail of per book into the respective table. 
+	 * @return BookAddResponseDto which includes user id,message and status code.
+	 *         This method will save detail of per book into the respective table. 
 	 */
 	@Override
 	public BookAddResponseDto add(BookAddRequestDto bookAddRequestDto) {
+		
+		log.info("Into Adding Book Service");
 		
 		BookAddResponseDto bookAddResponseDto=new BookAddResponseDto();
 		
@@ -54,11 +71,33 @@ public class BookServiceImpl implements BookService{
 			
 		return bookAddResponseDto;
 	}
-
+	
+	/**
+	 * @param bookTransactionAddRequestDto
+	 * @return BookTransactionResponseDto which includes transaction id,message and status code.
+	 */
 	@Override
-	public BookAddResponseDto request(BookAddRequestDto bookAddRequestDto) {
+	public BookTransactionResponseDto request(BookTransactionRequestDto bookTransactionAddRequestDto) {
+		log.info("Into Request/Borrow Service");
 		
-		return null;
+		Book book=new Book();
+		User user=new User();
+		Transaction transaction=new Transaction();
+		BookTransactionResponseDto bookTransactionResponseDto=new BookTransactionResponseDto();
+		if(! userRepository.findById(bookTransactionAddRequestDto.getUserId()).isPresent()) {
+			throw new BookException(userNotFound);
+		}
+		if(! bookRepository.findById(bookTransactionAddRequestDto.getBookId()).isPresent()) {
+			throw new BookException(bookNotFound);
+		}
+		book.setBookId(bookTransactionAddRequestDto.getBookId());
+		user.setUserId(bookTransactionAddRequestDto.getUserId());
+		transaction.setBookId(book);
+		transaction.setUserId(user);
+		transaction.setTransactionType(bookTransactionAddRequestDto.getTransactionType());
+		Transaction transactionResponse=transactionRepository.save(transaction);
+		bookTransactionResponseDto.setTransactionId(transactionResponse.getTransactionId());
+		return bookTransactionResponseDto;
 	}
 
 }

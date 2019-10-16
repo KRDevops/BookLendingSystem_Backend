@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ing.bms.dto.BookAddRequestDto;
 import com.ing.bms.dto.BookAddResponseDto;
+import com.ing.bms.dto.BookTransactionRequestDto;
+import com.ing.bms.dto.BookTransactionResponseDto;
 import com.ing.bms.service.BookService;
 
 @RestController
@@ -35,4 +37,12 @@ public class BookController {
 		return bookAddResponseDto;
 	}
 
+	@PostMapping("/requests")
+	public BookTransactionResponseDto request(@Valid BookTransactionRequestDto bookTransactionAddRequestDto) {
+		BookTransactionResponseDto bookTransactionResponseDto=bookService.request(bookTransactionAddRequestDto);
+		bookTransactionResponseDto.setMessage(message);
+		bookTransactionResponseDto.setStatusCode(successCode);
+		return bookTransactionResponseDto;
+	}
+	
 }

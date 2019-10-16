@@ -37,9 +37,9 @@ public class Transaction implements Serializable {
 	private LocalDate transactionDate;
 	
 	@ManyToOne
-	private User user_id;
+	private User userId;
 	
 	@ManyToOne
-	private Book book_id;
+	private Book bookId;
 
 }
