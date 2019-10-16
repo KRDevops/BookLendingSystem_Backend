@@ -41,6 +41,6 @@ public class Book implements Serializable {
 	private String availabilityStatus = "Available";
 	
 	@Column(name = "isbn", nullable = false, unique= true)
-	private Integer isbn;
+	private Long isbn;
 
 }
