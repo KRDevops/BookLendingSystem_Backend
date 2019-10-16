@@ -5,6 +5,9 @@ import java.security.SecureRandom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
+import com.ing.bms.dto.UserLoginRequestDTO;
+import com.ing.bms.dto.UserLoginResponseDTO;
 import com.ing.bms.dto.UserRegisterRequestDTO;
 import com.ing.bms.dto.UserRegisterResponseDTO;
 import com.ing.bms.entity.User;
@@ -46,4 +49,23 @@ public class UserServiceImpl implements UserService {
 		}
 		return result;
 	}
+
+	
+	public UserLoginResponseDTO login(UserLoginRequestDTO userLoginRequestDto) {
+		User register = userRepository.findByUserNameAndPassword(userLoginRequestDto.getUserName(),
+				userLoginRequestDto.getPassword());
+
+		/*(if (customer == null) {
+			throw new CommonException(ExceptionConstants.USER_NOT_FOUND);
+		}*/
+		UserLoginResponseDTO userLoginResponseDto = new UserLoginResponseDTO();
+		userLoginResponseDto.setUserId(register.getUserId());
+		userLoginResponseDto.setMessage("logged in successfully");
+		return userLoginResponseDto;
+
+
+		}
+
+	
+		
 }
