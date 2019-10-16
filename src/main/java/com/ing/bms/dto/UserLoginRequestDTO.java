@@ -1,10 +1,6 @@
 package com.ing.bms.dto;
 
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 public class UserLoginRequestDTO {
 	private String emailId;
 	public String getEmailId() {
@@ -20,4 +16,18 @@ public class UserLoginRequestDTO {
 		this.password = password;
 	}
 	private String password;
+	public String getEmailId() {
+		return emailId;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	
 }
