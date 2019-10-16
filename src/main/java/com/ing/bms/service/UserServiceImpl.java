@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepository userRepository;
 
-	@Value("${statusCode.success}")
+	@Value("${statuscode.success}")
 	private Integer statusCode;
 
 	@Value("${apiKey}")
