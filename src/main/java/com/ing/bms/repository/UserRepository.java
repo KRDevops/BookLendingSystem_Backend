@@ -9,8 +9,7 @@ import com.ing.bms.entity.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-	
-	Optional<User> findByEmailIdAndPassword(String userName, String password);
 
+	Optional<User> findByEmailIdAndPassword(String userName, String password);
 
 }
