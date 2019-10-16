@@ -22,5 +22,7 @@ public class ScheduledTasks {
 	public void run() {
 //		schedulerService.update(Long.valueOf(cif));
 		logger.info("Current time is :: " + Calendar.getInstance().getTime());
+		
+		
 	}
 }

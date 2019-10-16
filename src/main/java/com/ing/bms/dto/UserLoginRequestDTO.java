@@ -1,17 +1,17 @@
 package com.ing.bms.dto;
 
-public class UserLoginRequestDTO {
 
-	private String userName;
+public class UserLoginRequestDTO {
+	private String emailId;
 	private String password;
-	public String getUserName() {
-		return userName;
+	public String getEmailId() {
+		return emailId;
 	}
 	public String getPassword() {
 		return password;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
 	}
 	public void setPassword(String password) {
 		this.password = password;

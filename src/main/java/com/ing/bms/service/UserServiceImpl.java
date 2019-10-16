@@ -7,6 +7,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-
 import com.ing.bms.dto.UserLoginRequestDTO;
 import com.ing.bms.dto.UserLoginResponseDTO;
 import com.ing.bms.dto.UserRegisterRequestDTO;
@@ -25,6 +25,7 @@ import com.ing.bms.dto.UserRegisterResponseDTO;
 import com.ing.bms.entity.User;
 import com.ing.bms.exception.EmailException;
 import com.ing.bms.exception.InvalidMobileNumberException;
+import com.ing.bms.exception.UserNotFoundException;
 import com.ing.bms.repository.UserRepository;
 import com.ing.bms.util.BMSUtil;
 import com.ing.bms.util.EmailValidator;
@@ -122,7 +123,14 @@ public class UserServiceImpl implements UserService {
 		return generatedPassword.substring(0, 5);
 	}
 
+	/**
+	 * 
+	 * @return This method sends sms to the registered mobile number.
+	 * 
+	 */
 	public String sendSms(String userName, String passWord, Long phoneNumber) {
+		
+		LOGGER.info("sendSms method in UserService started");
 		try {
 			// Construct data
 			String message = msgPart1 + userName + msgPart2 + passWord;
@@ -144,6 +152,7 @@ public class UserServiceImpl implements UserService {
 			}
 			rd.close();
 			LOGGER.info("SMS sent");
+			LOGGER.info("sendSms method in UserService started");
 			return stringBuffer.toString();
 		} catch (Exception e) {
 			LOGGER.error("Error SMS " + e);
@@ -151,22 +160,30 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	
+	/**
+	 * 
+	 * @return This method is used to login to the book management system and
+	 *         returns success message.
+	 * 
+	 * @throws UserNotFoundException
+	 * 
+	 * 
+	 */
 	public UserLoginResponseDTO login(UserLoginRequestDTO userLoginRequestDto) {
-		User register = userRepository.findByUserNameAndPassword(userLoginRequestDto.getUserName(),
+		LOGGER.info("login method in UserService started");
+
+		Optional<User> user = userRepository.findByEmailIdAndPassword(userLoginRequestDto.getEmailId(),
 				userLoginRequestDto.getPassword());
 
-		/*(if (customer == null) {
-			throw new CommonException(ExceptionConstants.USER_NOT_FOUND);
-		}*/
+		if (!user.isPresent()) {
+			throw new UserNotFoundException(BMSUtil.USER_NOT_FOUND);
+		}
 		UserLoginResponseDTO userLoginResponseDto = new UserLoginResponseDTO();
-		userLoginResponseDto.setUserId(register.getUserId());
-		userLoginResponseDto.setMessage("logged in successfully");
+		userLoginResponseDto.setUserId(user.get().getUserId());
+		LOGGER.info("login method in UserService started");
+
 		return userLoginResponseDto;
 
+	}
 
-		}
-
-	
-		
 }
