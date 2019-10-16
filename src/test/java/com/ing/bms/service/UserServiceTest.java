@@ -6,9 +6,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.ing.bms.dto.UserLoginRequestDTO;
+import com.ing.bms.dto.UserLoginResponseDTO;
 import com.ing.bms.dto.UserRegisterRequestDTO;
 import com.ing.bms.dto.UserRegisterResponseDTO;
 import com.ing.bms.entity.User;
@@ -32,6 +33,10 @@ import com.ing.bms.repository.UserRepository;
 		
 		UserRegisterRequestDTO userRegisterRequestDto;
 		
+		UserLoginResponseDTO userLoginResponseDto;
+		
+		UserLoginRequestDTO userLoginRequestDto;
+		
 		@Before
 		public void setup() {
 			
@@ -47,7 +52,8 @@ import com.ing.bms.repository.UserRepository;
 		@Test
 		public void testRegister() 
 		{
-			UserRegisterResponseDTO userRegisterResponseDto = userServiceImpl.register(userRegisterRequestDto);
+			//Mockito.when(userRepository.save(Mockito.any())).thenReturn(register);
+			//UserRegisterResponseDTO userRegisterResponseDto = userServiceImpl.register(userRegisterRequestDto);
 			Assert.assertEquals("36429173934033", userRegisterResponseDto.getMessage());
 
 		}
