@@ -25,6 +25,9 @@ public class Book implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long bookId;
 	
+	@Column(name = "book_name", nullable = false)
+	private String bookName;
+	
 	@Column(name = "author_name", nullable = false)
 	private String authorName;
 	
@@ -35,7 +38,7 @@ public class Book implements Serializable {
 	private String publicationYear;
 	
 	@Column(name = "availability_status", nullable = false)
-	private String availabilityStatus;
+	private String availabilityStatus = "Available";
 	
 	@Column(name = "isbn", nullable = false, unique= true)
 	private String isbn;
