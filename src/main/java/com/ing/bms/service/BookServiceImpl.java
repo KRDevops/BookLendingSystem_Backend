@@ -55,7 +55,6 @@ public class BookServiceImpl implements BookService {
 		log.info("Into Adding Book Service");
 
 		BookAddResponseDto bookAddResponseDto = new BookAddResponseDto();
-
 		if (bookAddRequestDto.getUserId() != null) {
 			Optional<User> user = userRepository.findById(bookAddRequestDto.getUserId());
 			if (!user.isPresent()) {
