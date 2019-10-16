@@ -25,6 +25,7 @@ public class Book implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long bookId;
 	
+
 	public Long getBookId() {
 		return bookId;
 	}
@@ -57,13 +58,7 @@ public class Book implements Serializable {
 		this.category = category;
 	}
 
-	public String getPublicationYear() {
-		return publicationYear;
-	}
-
-	public void setPublicationYear(String publicationYear) {
-		this.publicationYear = publicationYear;
-	}
+	
 
 	public String getAvailabilityStatus() {
 		return availabilityStatus;
@@ -73,13 +68,9 @@ public class Book implements Serializable {
 		this.availabilityStatus = availabilityStatus;
 	}
 
-	public String getIsbn() {
-		return isbn;
-	}
+	
 
-	public void setIsbn(String isbn) {
-		this.isbn = isbn;
-	}
+
 
 	@Column(name = "author_name", nullable = false)
 	private String authorName;
@@ -89,12 +80,32 @@ public class Book implements Serializable {
 	private String category;
 	
 	@Column(name = "publication_year", nullable = false)
-	private String publicationYear;
+	private Integer publicationYear;
 	
+	public Integer getPublicationYear() {
+		return publicationYear;
+	}
+
+	public void setPublicationYear(Integer publicationYear) {
+		this.publicationYear = publicationYear;
+	}
+
+	public Integer getIsbn() {
+		return isbn;
+	}
+
+	public void setIsbn(Integer isbn) {
+		this.isbn = isbn;
+	}
+
+
+
+
+
 	@Column(name = "availability_status", nullable = false)
-	private String availabilityStatus;
+	private String availabilityStatus = "Available";
 	
 	@Column(name = "isbn", nullable = false, unique= true)
-	private String isbn;
+	private Integer isbn;
 
 }
