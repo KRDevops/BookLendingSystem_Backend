@@ -35,12 +35,12 @@ public class Book implements Serializable {
 	private String category;
 	
 	@Column(name = "publication_year", nullable = false)
-	private String publicationYear;
+	private Integer publicationYear;
 	
 	@Column(name = "availability_status", nullable = false)
 	private String availabilityStatus = "Available";
 	
 	@Column(name = "isbn", nullable = false, unique= true)
-	private String isbn;
+	private Integer isbn;
 
 }

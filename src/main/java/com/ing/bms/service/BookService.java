@@ -1,9 +1,11 @@
 package com.ing.bms.service;
 
 import com.ing.bms.dto.BookAddRequestDto;
-import com.ing.bms.dto.CommonResponseDto;
+import com.ing.bms.dto.BookAddResponseDto;
 
 public interface BookService {
 
-	public CommonResponseDto add(BookAddRequestDto bookAddRequestDto);
+	public BookAddResponseDto add(BookAddRequestDto bookAddRequestDto);
+	
+	public BookAddResponseDto request(BookAddRequestDto bookAddRequestDto);
 }

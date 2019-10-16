@@ -9,10 +9,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class CommonResponseDto implements Serializable {
+public class BookAddResponseDto implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private String message;
 	private Integer statusCode;
-
+	private Long bookId;
 }
