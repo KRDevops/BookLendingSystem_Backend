@@ -1,5 +1,7 @@
 package com.ing.bms.controller;
 
+import java.security.NoSuchAlgorithmException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +20,15 @@ import com.ing.bms.service.UserService;
 
 @RestController
 @CrossOrigin(allowedHeaders = { "*", "*/" }, origins = { "*", "*/" })
-@RequestMapping("/bms/api/v1/registration")
+@RequestMapping("/bms/api/v1")
 public class UserController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
 	UserService userService;
 
-	@PostMapping("/register")
-	public ResponseEntity<UserRegisterResponseDTO> register(@RequestBody UserRegisterRequestDTO userRegisterRequestDto) {
+	@PostMapping("/registration")
+	public ResponseEntity<UserRegisterResponseDTO> register(@RequestBody UserRegisterRequestDTO userRegisterRequestDto)throws NoSuchAlgorithmException {
 		LOGGER.info("inside user controller");
 		UserRegisterResponseDTO userRegisterResponseDto = userService.register(userRegisterRequestDto);
 		return new ResponseEntity<>(userRegisterResponseDto, HttpStatus.CREATED);
