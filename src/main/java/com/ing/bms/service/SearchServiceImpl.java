@@ -12,22 +12,20 @@ import com.ing.bms.repository.BooksRepository;
 
 @Service
 public class SearchServiceImpl implements SearchService {
-@Autowired
-BooksRepository booksRepository;
+	@Autowired
+	BooksRepository booksRepository;
+
 	@Override
 	public List<Book> search(String bookName, String authorName, Integer pageNumber) {
-		
-		Pageable paging = PageRequest.of(pageNumber,2);
-		 
-		if(bookName!=null&&authorName!=null){
-			List<Book> books=booksRepository.findByAuthorNameAndBookName(authorName,bookName,paging);
-return books;
-		}
-		else
-		{
-	List<Book> books=booksRepository.findByAuthorNameOrBookName(authorName,bookName,paging);
 
-	return books;
-	}
+		Pageable paging = PageRequest.of(pageNumber, 2);
+
+		if (bookName != null && authorName != null) {
+			return booksRepository.findByAuthorNameAndBookName(authorName, bookName, paging);
+
+		} else {
+			return booksRepository.findByAuthorNameOrBookName(authorName, bookName, paging);
+
+		}
 	}
 }

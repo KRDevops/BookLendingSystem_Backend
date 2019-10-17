@@ -22,4 +22,5 @@ public class BMSUtil {
 	public static final String INVALID_MOBILE_NUMBER_EXCEPTION = "Please enter valid mobile number";
 	public static final String AGE_EXCEPTION = "Not eligible for apply loan";
 	public static final String USER_NOT_FOUND = "User not found";
+	public static final String USER_ALREADY_EXISTS = "User already registered with this email id";
 }

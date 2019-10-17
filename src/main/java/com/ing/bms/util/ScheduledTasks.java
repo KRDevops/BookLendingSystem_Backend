@@ -9,20 +9,18 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.ing.bms.service.SchedulerService;
+
 @Component
 public class ScheduledTasks {
-    private static Logger logger = LoggerFactory.getLogger(ScheduledTasks.class);
-    @Autowired
-	SchedulerService schedulerService;	
-//    @Value("${cif}")
-//	private String cif;
-//	@Scheduled(fixedRate = 5000)
-    
-	@Scheduled(cron = "0 */3 * ? * *")
+	private static Logger logger = LoggerFactory.getLogger(ScheduledTasks.class);
+	@Autowired
+	SchedulerService schedulerService;
+
+	@Scheduled(cron = "0 */1 * ? * *")
 	public void run() {
-//		schedulerService.update(Long.valueOf(cif));
 		logger.info("Current time is :: " + Calendar.getInstance().getTime());
-		
-		
+
+		schedulerService.updateStatus();
+
 	}
 }
