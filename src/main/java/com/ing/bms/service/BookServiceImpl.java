@@ -43,9 +43,6 @@ public class BookServiceImpl implements BookService {
 	@Autowired
 	TransactionRepository transactionRepository;
 
-	@Autowired
-	private JavaMailSender javaMailSender;
-
 	private static final String TRANSACTIONSTATUS = "Borrowed";
 
 	/**
