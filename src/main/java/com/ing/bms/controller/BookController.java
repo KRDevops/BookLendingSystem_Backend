@@ -53,6 +53,6 @@ public class BookController {
 		bookTransactionResponseDto.setMessage(message);
 		bookTransactionResponseDto.setStatusCode(successCode);
 		return bookTransactionResponseDto;
-	}	
+	}
 	
 }
