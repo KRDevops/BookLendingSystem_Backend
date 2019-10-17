@@ -21,22 +21,26 @@ import org.mockito.junit.MockitoJUnitRunner;
 import com.ing.bms.dto.UserLoginRequestDTO;
 import com.ing.bms.dto.UserLoginResponseDTO;
 import com.ing.bms.dto.UserRegisterRequestDTO;
-import com.ing.bms.dto.UserRegisterResponseDTO;
+import com.ing.bms.dto.BMSResponseDTO;
 import com.ing.bms.entity.User;
 import com.ing.bms.exception.EmailException;
 import com.ing.bms.exception.InvalidMobileNumberException;
 import com.ing.bms.repository.UserRepository;
+import com.ing.bms.util.JavaMailUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
 
 	@Mock
 	UserRepository userRepository;
-
+	
+	@Mock
+	JavaMailUtil javaMailUtil;
+	
 	@InjectMocks
 	UserServiceImpl userServiceImpl;
 
-	UserRegisterResponseDTO userRegisterResponseDto;
+	BMSResponseDTO userRegisterResponseDto;
 
 	UserRegisterRequestDTO userRegisterRequestDto;
 
@@ -80,7 +84,7 @@ public class UserServiceTest {
 	public void testRegister() throws NoSuchAlgorithmException, MessagingException {
 //		Mockito.when(userRepository.findByEmailId(userRegisterRequestDto.getEmailId()).;
 		Mockito.when(userRepository.save(Mockito.any())).thenReturn(user);
-		UserRegisterResponseDTO userRegisterResponseDto = userServiceImpl.register(userRegisterRequestDto);
+		BMSResponseDTO userRegisterResponseDto = userServiceImpl.register(userRegisterRequestDto);
 		Assert.assertNotNull(userRegisterResponseDto.getStatusCode());
 
 	}
@@ -98,14 +102,14 @@ public class UserServiceTest {
 	@Test(expected = EmailException.class)
 	public void testEmailException() throws NoSuchAlgorithmException, MessagingException {
 		userRegisterRequestDto.setEmailId("balaji12133gmail.com");
-		UserRegisterResponseDTO userRegResDTO = userServiceImpl.register(userRegisterRequestDto);
+		BMSResponseDTO userRegResDTO = userServiceImpl.register(userRegisterRequestDto);
 		assertNotNull(userRegResDTO);
 	}
 
 	@Test(expected = InvalidMobileNumberException.class)
 	public void testInValidPhoneNumberException() throws NoSuchAlgorithmException, MessagingException {
 		userRegisterRequestDto.setPhoneNumber(12113232422L);
-		UserRegisterResponseDTO userRegResDTO = userServiceImpl.register(userRegisterRequestDto);
+		BMSResponseDTO userRegResDTO = userServiceImpl.register(userRegisterRequestDto);
 		assertNotNull(userRegResDTO);
 	}
 

@@ -11,4 +11,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
 	Optional<Transaction> findByBookIdAndTransactionType(Book bookId, String transactionType);
 
+	Optional<Transaction> findTop1ByBookIdAndTransactionTypeOrderByTransactionDateAsc(Book bookId, String transactionType);
 }

@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.mail.MessagingException;
+import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ import org.springframework.stereotype.Service;
 import com.ing.bms.dto.UserLoginRequestDTO;
 import com.ing.bms.dto.UserLoginResponseDTO;
 import com.ing.bms.dto.UserRegisterRequestDTO;
-import com.ing.bms.dto.UserRegisterResponseDTO;
+import com.ing.bms.dto.BMSResponseDTO;
 import com.ing.bms.entity.User;
 import com.ing.bms.exception.EmailException;
 import com.ing.bms.exception.InvalidMobileNumberException;
@@ -39,6 +40,7 @@ import com.ing.bms.util.JavaMailUtil;
  *        management system, login to bms
  */
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 	private static final String MOBILE_VALIDATION = "^[0-9]{10}$";
@@ -61,6 +63,9 @@ public class UserServiceImpl implements UserService {
 	@Value("${senderName}")
 	private String senderName;
 
+	@Value("${reg.subject}")
+	private String subject;
+
 	/**
 	 * @param userRegisterRequest
 	 * 
@@ -69,7 +74,7 @@ public class UserServiceImpl implements UserService {
 	 *         into database.
 	 * @throws MessagingException
 	 */
-	public UserRegisterResponseDTO register(UserRegisterRequestDTO userRegisterRequest)
+	public BMSResponseDTO register(UserRegisterRequestDTO userRegisterRequest)
 			throws NoSuchAlgorithmException, MessagingException {
 		LOGGER.info("register method in UserService started");
 
@@ -85,13 +90,13 @@ public class UserServiceImpl implements UserService {
 			throw new UserAlreadyExistException(BMSUtil.USER_ALREADY_EXISTS);
 
 		User user = new User();
-		UserRegisterResponseDTO responseDTO = new UserRegisterResponseDTO();
+		BMSResponseDTO responseDTO = new BMSResponseDTO();
 		BeanUtils.copyProperties(userRegisterRequest, user);
 		user.setPassword(generatePassword(userRegisterRequest.getUserName()));
 
 		userRepository.save(user);
 		sendSms(user.getUserName(), user.getPassword(), user.getPhoneNumber());
-		javaMailUtil.sendMail(user.getEmailId(), user.getUserName(), user.getPassword());
+		javaMailUtil.sendMail(user.getEmailId(), user.getUserName(), user.getPassword(), subject);
 		LOGGER.info("register method in UserService ended");
 		return responseDTO;
 	}

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ing.bms.dto.UserLoginRequestDTO;
 import com.ing.bms.dto.UserLoginResponseDTO;
 import com.ing.bms.dto.UserRegisterRequestDTO;
-import com.ing.bms.dto.UserRegisterResponseDTO;
+import com.ing.bms.dto.BMSResponseDTO;
 import com.ing.bms.service.UserService;
 import com.ing.bms.util.BMSUtil;
 
@@ -36,10 +36,10 @@ public class UserController {
 	private String statusCode;
 
 	@PostMapping("/registration")
-	public ResponseEntity<UserRegisterResponseDTO> register(@RequestBody UserRegisterRequestDTO userRegisterRequestDto)
+	public ResponseEntity<BMSResponseDTO> register(@RequestBody UserRegisterRequestDTO userRegisterRequestDto)
 			throws NoSuchAlgorithmException, MessagingException {
 		LOGGER.info("register in user controller method started");
-		UserRegisterResponseDTO userRegisterResponseDto = userService.register(userRegisterRequestDto);
+		BMSResponseDTO userRegisterResponseDto = userService.register(userRegisterRequestDto);
 		userRegisterResponseDto.setMessage(BMSUtil.SUCCESS);
 		userRegisterResponseDto.setStatusCode(200);
 		LOGGER.info("register in user controller method ended");

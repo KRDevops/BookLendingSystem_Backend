@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class UserRegisterResponseDTO {
+public class BMSResponseDTO {
 	private String message;
 	private int statusCode;
 }
