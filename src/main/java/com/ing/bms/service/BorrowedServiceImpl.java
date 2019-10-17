@@ -23,7 +23,6 @@ public class BorrowedServiceImpl implements BorrowedService {
 	public List<Transaction> borrow(Long userId) {
 		User user = new User();
 		user.setUserId(userId);
-
 		return transactionsRepository.findByUserId(user);
 	}
 }

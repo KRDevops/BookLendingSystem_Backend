@@ -18,7 +18,7 @@ public class ScheduledTasks {
 
 	@Scheduled(cron = "0 */1 * ? * *")
 	public void run() {
-		logger.info("Current time is :: " + Calendar.getInstance().getTime());
+		logger.info("Message %s",Calendar.getInstance().getTime().toString());
 
 		schedulerService.updateStatus();
 

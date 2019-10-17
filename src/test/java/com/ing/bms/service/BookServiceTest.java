@@ -107,7 +107,7 @@ public class BookServiceTest {
 		Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(user));
 		Mockito.when(bookRepository.findById(Mockito.any())).thenReturn(Optional.of(book));
 		Mockito.when(transactionRepository.save(Mockito.any())).thenReturn(transaction);
-		Mockito.when(bookRepository.save(Mockito.any())).thenReturn(book);
+		//Mockito.when(bookRepository.save(Mockito.any())).thenReturn(book);
 		bookTransactionResponsetDto=bookServiceImpl.request(bookTransactionRequestDto);
 		Assert.assertEquals(Long.valueOf(5L), bookTransactionResponsetDto.getTransactionId());
 	}
