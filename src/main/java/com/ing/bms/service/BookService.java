@@ -11,5 +11,4 @@ public interface BookService {
 	
 	public BookTransactionResponseDto request(BookTransactionRequestDto bookTransactionAddRequestDto);
 
-	public void sendEmail();
-}
+	}

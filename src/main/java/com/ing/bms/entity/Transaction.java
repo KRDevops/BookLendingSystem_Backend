@@ -23,22 +23,22 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Transaction implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long transactionId;
-	
+
 	@Column(name = "transaction_type", nullable = false)
 	private String transactionType;
-	
+
 	@Column(name = "transaction_date", nullable = false)
 	@CreationTimestamp
 	private LocalDate transactionDate;
-	
+
 	@ManyToOne
 	private User userId;
-	
+
 	@ManyToOne
 	private Book bookId;
 

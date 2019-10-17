@@ -53,11 +53,6 @@ public class BookController {
 		bookTransactionResponseDto.setMessage(message);
 		bookTransactionResponseDto.setStatusCode(successCode);
 		return bookTransactionResponseDto;
-	}
-	
-	@GetMapping("/sendMail")
-	public void sendMail() {
-		bookService.sendEmail();
-	}
+	}	
 	
 }

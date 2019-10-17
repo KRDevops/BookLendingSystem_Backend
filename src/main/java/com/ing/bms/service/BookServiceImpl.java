@@ -19,6 +19,7 @@ import com.ing.bms.entity.User;
 import com.ing.bms.exception.BookException;
 import com.ing.bms.repository.BookRepository;
 import com.ing.bms.repository.UserRepository;
+import com.ing.bms.util.BMSUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,11 +45,6 @@ public class BookServiceImpl implements BookService {
 	@Autowired
     private JavaMailSender javaMailSender;
 
-	@Value("${user.notfound}")
-	private String userNotFound;
-
-	@Value("${book.invalid}")
-	private String bookNotFound;
 	
 	private static final String TRANSACTIONSTATUS="Borrowed";
 
@@ -67,7 +63,8 @@ public class BookServiceImpl implements BookService {
 		if (bookAddRequestDto.getUserId() != null) {
 			Optional<User> user = userRepository.findById(bookAddRequestDto.getUserId());
 			if (!user.isPresent()) {
-				throw new BookException(userNotFound);
+
+				throw new BookException(BMSUtil.USER_NOT_FOUND);
 			}
 			//Creating Book
 			Book book = new Book();
@@ -93,16 +90,17 @@ public class BookServiceImpl implements BookService {
 		Optional<User> user = userRepository.findById(bookTransactionAddRequestDto.getUserId());
 		Transaction transaction = new Transaction();
 		BookTransactionResponseDto bookTransactionResponseDto = new BookTransactionResponseDto();
+
 		
 		if (! user.isPresent()) {
-			throw new BookException(userNotFound);
+			throw new BookException(BMSUtil.USER_NOT_FOUND);
 		}
 		if (! book.isPresent()) {
-			throw new BookException(bookNotFound);
+			throw new BookException(BMSUtil.BOOK_NOT_FOUND);
 		}
 		//Updating As Not Available For Borrowed Book
 		if(bookTransactionAddRequestDto.getTransactionType() == TRANSACTIONSTATUS) {
-			book.get().setAvailabilityStatus("N");
+			book.get().setAvailabilityStatus(BMSUtil.AVAILABILITY_STATUS_N);
 			bookRepository.save(book.get());
 		}
 		//Creating Transaction
@@ -115,18 +113,5 @@ public class BookServiceImpl implements BookService {
 		
 		return bookTransactionResponseDto;
 	}
-	
-	@Override
-	public void sendEmail() {
-
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo("afrinafi88077@gmail.com");
-
-        msg.setSubject("Testing from Spring Boot");
-        msg.setText("Hello World \n Spring Boot Email");
-
-        javaMailSender.send(msg);
-
-    }
 
 }

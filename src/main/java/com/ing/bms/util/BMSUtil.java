@@ -22,4 +22,7 @@ public class BMSUtil {
 	public static final String INVALID_MOBILE_NUMBER_EXCEPTION = "Please enter valid mobile number";
 	public static final String AGE_EXCEPTION = "Not eligible for apply loan";
 	public static final String USER_NOT_FOUND = "User not found";
+	public static final String BOOK_NOT_FOUND = "Book not found";
+	public static final String AVAILABILITY_STATUS_Y = "Y";
+	public static final String AVAILABILITY_STATUS_N = "N";
 }
