@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.ing.bms.dto.BookAddRequestDto;
@@ -18,11 +18,16 @@ import com.ing.bms.exception.BookException;
 import com.ing.bms.repository.BookRepository;
 import com.ing.bms.repository.TransactionRepository;
 import com.ing.bms.repository.UserRepository;
+import com.ing.bms.util.BMSUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * @since 2019-10-16 This class includes methods for add a book
+ * <<<<<<< HEAD
+ * 
+ * @since 2019-10-16 This class includes methods for add a book =======
+ * @since 2019-10-16 This class includes methods for adding a book and
+ *        request/borrow a book >>>>>>> 73dc71bacf5c4d3646c33453a483e990e8938de3
  * 
  */
 @Service
@@ -38,11 +43,10 @@ public class BookServiceImpl implements BookService {
 	@Autowired
 	TransactionRepository transactionRepository;
 
-	@Value("${user.notfound}")
-	private String userNotFound;
+	@Autowired
+	private JavaMailSender javaMailSender;
 
-	@Value("${book.invalid}")
-	private String bookNotFound;
+	private static final String TRANSACTIONSTATUS = "Borrowed";
 
 	/**
 	 * @param bookAddRequestDto
@@ -55,11 +59,14 @@ public class BookServiceImpl implements BookService {
 		log.info("Into Adding Book Service");
 
 		BookAddResponseDto bookAddResponseDto = new BookAddResponseDto();
+
 		if (bookAddRequestDto.getUserId() != null) {
 			Optional<User> user = userRepository.findById(bookAddRequestDto.getUserId());
 			if (!user.isPresent()) {
-				throw new BookException(userNotFound);
+
+				throw new BookException(BMSUtil.USER_NOT_FOUND);
 			}
+			// Creating Book
 			Book book = new Book();
 			BeanUtils.copyProperties(bookAddRequestDto, book);
 			Book bookResponse = bookRepository.save(book);
@@ -72,29 +79,38 @@ public class BookServiceImpl implements BookService {
 	/**
 	 * @param bookTransactionAddRequestDto
 	 * @return BookTransactionResponseDto which includes transaction id,message and
-	 *         status code.
+	 *         status Code. This method handles the functionality of borrow and
+	 *         request a book.
 	 */
 	@Override
 	public BookTransactionResponseDto request(BookTransactionRequestDto bookTransactionAddRequestDto) {
+
 		log.info("Into Request/Borrow Service");
 
-		Book book = new Book();
-		User user = new User();
+		Optional<Book> book = bookRepository.findById(bookTransactionAddRequestDto.getBookId());
+		Optional<User> user = userRepository.findById(bookTransactionAddRequestDto.getUserId());
 		Transaction transaction = new Transaction();
 		BookTransactionResponseDto bookTransactionResponseDto = new BookTransactionResponseDto();
-		if (!userRepository.findById(bookTransactionAddRequestDto.getUserId()).isPresent()) {
-			throw new BookException(userNotFound);
+
+		if (!user.isPresent()) {
+			throw new BookException(BMSUtil.USER_NOT_FOUND);
 		}
-		if (!bookRepository.findById(bookTransactionAddRequestDto.getBookId()).isPresent()) {
-			throw new BookException(bookNotFound);
+		if (!book.isPresent()) {
+			throw new BookException(BMSUtil.BOOK_NOT_FOUND);
 		}
-		book.setBookId(bookTransactionAddRequestDto.getBookId());
-		user.setUserId(bookTransactionAddRequestDto.getUserId());
-		transaction.setBookId(book);
-		transaction.setUserId(user);
+		// Updating As Not Available For Borrowed Book
+		if (bookTransactionAddRequestDto.getTransactionType() == TRANSACTIONSTATUS) {
+			book.get().setAvailabilityStatus(BMSUtil.AVAILABILITY_STATUS_N);
+			bookRepository.save(book.get());
+		}
+		// Creating Transaction
+		transaction.setBookId(book.get());
+		transaction.setUserId(user.get());
 		transaction.setTransactionType(bookTransactionAddRequestDto.getTransactionType());
 		Transaction transactionResponse = transactionRepository.save(transaction);
+		// Setting Response
 		bookTransactionResponseDto.setTransactionId(transactionResponse.getTransactionId());
+
 		return bookTransactionResponseDto;
 	}
 

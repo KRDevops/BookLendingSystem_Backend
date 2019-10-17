@@ -26,15 +26,20 @@ public class Book implements Serializable {
 	private Long bookId;
 	@Column(name = "author_name", nullable = false)
 	private String authorName;
+
 	@Column(name = "book_name", nullable = false)
 	private String bookName;
+
 	@Column(name = "category", nullable = false)
 	private String category;
+
 	@Column(name = "publication_year", nullable = false)
 	private Integer publicationYear;
+
 	@Column(name = "availability_status", nullable = false)
 	private String availabilityStatus = "Y";
+
 	@Column(name = "isbn", nullable = false, unique = true)
-	private Integer isbn;
+	private Long isbn;
 
 }

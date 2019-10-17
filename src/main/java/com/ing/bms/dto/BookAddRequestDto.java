@@ -14,7 +14,5 @@ public class BookAddRequestDto {
 	private String authorName;
 	private String category;
 	private Integer publicationYear;
-	private Integer isbn;
-
-
+	private Long isbn;
 }

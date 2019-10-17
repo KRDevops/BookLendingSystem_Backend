@@ -7,7 +7,7 @@ public class BMSUtil {
 	}
 
 	public static final String SUCCESS = "User Registered Successfully";
-	public static final String LOGIN_SUCCESS="Logged-In Successfully";
+	public static final String LOGIN_SUCCESS = "Logged-In Successfully";
 	public static final String PRODUCT_NOT_FOUND = "product not found";
 	public static final String SERVER_ISSUE = "Server down";
 	public static final String EXCEL_EXCESS_COLUMN_EXCEPTION = "Unexpected Columns in File";
@@ -23,4 +23,7 @@ public class BMSUtil {
 	public static final String AGE_EXCEPTION = "Not eligible for apply loan";
 	public static final String USER_NOT_FOUND = "User not found";
 	public static final String USER_ALREADY_EXISTS = "User already registered with this email id";
+	public static final String BOOK_NOT_FOUND = "Book not found";
+	public static final String AVAILABILITY_STATUS_Y = "Y";
+	public static final String AVAILABILITY_STATUS_N = "N";
 }
