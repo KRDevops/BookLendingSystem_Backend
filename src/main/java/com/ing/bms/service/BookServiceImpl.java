@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.ing.bms.repository.TransactionRepository;
 
 /**
- * @since 2019-10-16 This class includes methods for add a book
+ * @since 2019-10-16 This class includes methods for adding a book and request/borrow a book
  * 
  */
 @Service
