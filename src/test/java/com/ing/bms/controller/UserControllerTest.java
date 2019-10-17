@@ -19,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 import com.ing.bms.dto.UserLoginRequestDTO;
 import com.ing.bms.dto.UserLoginResponseDTO;
 import com.ing.bms.dto.UserRegisterRequestDTO;
-import com.ing.bms.dto.UserRegisterResponseDTO;
+import com.ing.bms.dto.BMSResponseDTO;
 import com.ing.bms.service.UserService;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -34,7 +34,7 @@ public class UserControllerTest {
 
 	UserLoginRequestDTO userLoginRequest;
 
-	UserRegisterResponseDTO userRegisterResponse;
+	BMSResponseDTO userRegisterResponse;
 
 	UserLoginResponseDTO userLoginResponse;
 
@@ -55,8 +55,8 @@ public class UserControllerTest {
 	@Test
 	public void testRegister() throws NoSuchAlgorithmException, MessagingException {
 		Mockito.when(userService.register(Mockito.any())).thenReturn(userRegisterResponse);
-		ResponseEntity<UserRegisterResponseDTO> actual = userController.register(userRegisterRequest);
-		ResponseEntity<UserRegisterResponseDTO> expected = new ResponseEntity<UserRegisterResponseDTO>(
+		ResponseEntity<BMSResponseDTO> actual = userController.register(userRegisterRequest);
+		ResponseEntity<BMSResponseDTO> expected = new ResponseEntity<BMSResponseDTO>(
 				userRegisterResponse, HttpStatus.OK);
 		assertEquals(expected.getStatusCode().value(), actual.getStatusCodeValue());
 

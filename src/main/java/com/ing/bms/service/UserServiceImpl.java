@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 import com.ing.bms.dto.UserLoginRequestDTO;
 import com.ing.bms.dto.UserLoginResponseDTO;
 import com.ing.bms.dto.UserRegisterRequestDTO;
-import com.ing.bms.dto.UserRegisterResponseDTO;
+import com.ing.bms.dto.BMSResponseDTO;
 import com.ing.bms.entity.User;
 import com.ing.bms.exception.EmailException;
 import com.ing.bms.exception.InvalidMobileNumberException;
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
 	 *         into database.
 	 * @throws MessagingException
 	 */
-	public UserRegisterResponseDTO register(UserRegisterRequestDTO userRegisterRequest)
+	public BMSResponseDTO register(UserRegisterRequestDTO userRegisterRequest)
 			throws NoSuchAlgorithmException, MessagingException {
 		LOGGER.info("register method in UserService started");
 
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
 			throw new UserAlreadyExistException(BMSUtil.USER_ALREADY_EXISTS);
 
 		User user = new User();
-		UserRegisterResponseDTO responseDTO = new UserRegisterResponseDTO();
+		BMSResponseDTO responseDTO = new BMSResponseDTO();
 		BeanUtils.copyProperties(userRegisterRequest, user);
 		user.setPassword(generatePassword(userRegisterRequest.getUserName()));
 

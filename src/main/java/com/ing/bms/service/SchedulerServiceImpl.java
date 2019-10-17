@@ -12,11 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.ing.bms.dto.BMSResponseDTO;
 import com.ing.bms.entity.Book;
 import com.ing.bms.entity.Transaction;
 import com.ing.bms.repository.BookRepository;
 import com.ing.bms.repository.TransactionRepository;
 import com.ing.bms.repository.UserRepository;
+import com.ing.bms.util.BMSUtil;
 import com.ing.bms.util.JavaMailUtil;
 
 /**
@@ -60,15 +62,18 @@ public class SchedulerServiceImpl implements SchedulerService {
 	 * "returned" to make it available for another user
 	 * 
 	 */
-	public void updateStatus() {
+	public BMSResponseDTO updateStatus() {
 
 		LOGGER.info("updateStatus method in Scheduler Service started");
 		List<Book> books = bookRepository.findByAvailabilityStatus(notAvailable);
+		BMSResponseDTO bMSResponseDTO=new BMSResponseDTO();
 		books.stream().forEach(book -> {
 			Optional<Transaction> transaction = transactionRepository.findByBookIdAndTransactionType(book,
 					transactionType);
 			if (!transaction.isPresent()) {
 				LOGGER.info("No transactions found with borrowed transaction type");
+				bMSResponseDTO.setMessage(BMSUtil.GENERICFAILUREMESSAGE);
+				bMSResponseDTO.setStatusCode(BMSUtil.GENERICFAILURECODE);
 			} else {
 				if (LocalDate.now().compareTo(transaction.get().getTransactionDate().plusDays(3)) > 0) {
 					book.setAvailabilityStatus(availableStatus);
@@ -77,13 +82,17 @@ public class SchedulerServiceImpl implements SchedulerService {
 					transaction.get().setTransactionType(returnStatus);
 					transactionRepository.save(transaction.get());
 					Optional<Transaction> requestedTransaction = transactionRepository
-							.findByBookIdAndTransactionType(book, "Requested");
+							.findTop1ByBookIdAndTransactionTypeOrderByTransactionDateAsc(book, "Requested");
 					if (requestedTransaction.isPresent()) {
 						try {
 							javaMailUtil.sendMail(requestedTransaction.get().getUserId().getEmailId(),
 									availabilityMessage);
+							bMSResponseDTO.setMessage(BMSUtil.GENERICSUCCESSMESSAGE);
+							bMSResponseDTO.setStatusCode(BMSUtil.GENERICSUCCESSCODE);
 						} catch (MessagingException e) {
 							LOGGER.error(e.getMessage());
+							bMSResponseDTO.setMessage(BMSUtil.GENERICFAILUREMESSAGE);
+							bMSResponseDTO.setStatusCode(BMSUtil.GENERICFAILURECODE);
 						}
 					}
 				}
@@ -91,6 +100,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 
 		});
 		LOGGER.info("updateStatus method in Scheduler Service ended");
+		return bMSResponseDTO;
 	}
 
 }

@@ -26,4 +26,8 @@ public class BMSUtil {
 	public static final String BOOK_NOT_FOUND = "Book not found";
 	public static final String AVAILABILITY_STATUS_Y = "Y";
 	public static final String AVAILABILITY_STATUS_N = "N";
+	public static final Integer GENERICSUCCESSCODE = 200;
+	public static final String GENERICSUCCESSMESSAGE = "Success";
+	public static final Integer GENERICFAILURECODE = 404;
+	public static final String GENERICFAILUREMESSAGE = "Failed";
 }
