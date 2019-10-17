@@ -30,18 +30,17 @@ public class UserControllerTest {
 
 	@Mock
 	UserService userService;
-	UserRegisterRequestDTO userRegisterRequest;
+	
+	UserRegisterRequestDTO userRegisterRequest=new UserRegisterRequestDTO();
 
-	UserLoginRequestDTO userLoginRequest;
+	UserLoginRequestDTO userLoginRequest=new UserLoginRequestDTO();
 
-	BMSResponseDTO userRegisterResponse;
+	BMSResponseDTO bmsResponseDto=new BMSResponseDTO();
 
-	UserLoginResponseDTO userLoginResponse;
+	UserLoginResponseDTO userLoginResponse=new UserLoginResponseDTO();
 
 	@Before
 	public void setup() {
-		
-		userRegisterRequest = new UserRegisterRequestDTO();
 
 		userRegisterRequest.setEmailId("tsb@gmail.com");
 		userRegisterRequest.setPhoneNumber(8884148999L);
@@ -49,15 +48,24 @@ public class UserControllerTest {
 
 		userLoginRequest.setEmailId("tsb@gmail.com");
 		userLoginRequest.setPassword("abc123");
+		
+		
+		bmsResponseDto.setMessage("Success");
+		bmsResponseDto.setStatusCode(201);
+		
+		userLoginResponse.setMessage("Success");
+		userLoginResponse.setStatusCode(201);
+		userLoginResponse.setUserId(1L);
 
 	}
 
 	@Test
 	public void testRegister() throws NoSuchAlgorithmException, MessagingException {
-		Mockito.when(userService.register(Mockito.any())).thenReturn(userRegisterResponse);
+		
+		Mockito.when(userService.register(Mockito.any())).thenReturn(bmsResponseDto);
 		ResponseEntity<BMSResponseDTO> actual = userController.register(userRegisterRequest);
 		ResponseEntity<BMSResponseDTO> expected = new ResponseEntity<BMSResponseDTO>(
-				userRegisterResponse, HttpStatus.OK);
+				bmsResponseDto, HttpStatus.CREATED);
 		assertEquals(expected.getStatusCode().value(), actual.getStatusCodeValue());
 
 	}
