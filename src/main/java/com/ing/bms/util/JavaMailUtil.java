@@ -60,6 +60,25 @@ public class JavaMailUtil {
 	@Value("${message.part2}")
 	private String msgPart2;
 
+	private Session session;
+
+	public void setup() {
+		Properties properties = new Properties();
+
+		properties.put(auth, true);
+		properties.put(starttls, true);
+		properties.put(host, hostUrl);
+		properties.put(port, portNumber);
+
+		session = Session.getInstance(properties, new Authenticator() {
+			@Override
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new javax.mail.PasswordAuthentication(myAccountEmail, gmailPassword);
+			}
+		});
+
+	}
+
 	/**
 	 * 
 	 * @param recepient
@@ -71,25 +90,13 @@ public class JavaMailUtil {
 	 *         registering user in bms
 	 */
 	public void sendMail(String recepient, String userName, String password, String subject) throws MessagingException {
-		LOGGER.info("sendmail in JavaMailUtil started");
-		Properties properties = new Properties();
-
-		properties.put(auth, true);
-		properties.put(starttls, true);
-		properties.put(host, hostUrl);
-		properties.put(port, portNumber);
-
-		Session session = Session.getInstance(properties, new Authenticator() {
-			@Override
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new javax.mail.PasswordAuthentication(myAccountEmail, gmailPassword);
-			}
-		});
-		registrationMessage = registrationMessage + msgPart + userName +" "+ msgPart2 + password+".";
+		LOGGER.info("sendmail in JavaMailUtil - username/password started");
+		this.setup();
+		registrationMessage = registrationMessage + msgPart + userName + " " + msgPart2 + password + ".";
 		Message message = prepareMessage(session, myAccountEmail, recepient, registrationMessage, subject);
 		Transport.send(message);
-		LOGGER.info("sendmail in JavaMailUtil ended");
-		LOGGER.info("Message sent successfully");
+		LOGGER.info("sendmail in JavaMailUtil - username/password ended");
+		LOGGER.info("Message sent successfully from sendMail username/password");
 	}
 
 	/**
@@ -104,20 +111,7 @@ public class JavaMailUtil {
 	 */
 	public void sendMail(String recepient, String message, String subject) throws MessagingException {
 		LOGGER.info("sendmail in JavaMailUtil started");
-		Properties properties = new Properties();
-
-		properties.put(auth, true);
-		properties.put(starttls, true);
-		properties.put(host, hostUrl);
-		properties.put(port, portNumber);
-
-		Session session = Session.getInstance(properties, new Authenticator() {
-			@Override
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new javax.mail.PasswordAuthentication(myAccountEmail, gmailPassword);
-			}
-		});
-
+		this.setup();
 		Message mimeMessage = prepareMessage(session, myAccountEmail, recepient, message, subject);
 		Transport.send(mimeMessage);
 		LOGGER.info("sendmail in JavaMailUtil ended");

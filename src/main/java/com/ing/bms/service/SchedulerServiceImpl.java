@@ -58,7 +58,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 	private String transactionType;
 
 	@Value("${requestedTransactionType}")
-	private String requestedTransactionType;
+	private String requestTransactionType;
 
 	@Value("${availabilityMessage}")
 	private String availabilityMessage;
@@ -88,7 +88,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 					transaction.get().setTransactionType(returnStatus);
 					transactionRepository.save(transaction.get());
 					Optional<Transaction> requestedTransaction = transactionRepository
-							.findTop1ByBookIdAndTransactionTypeOrderByTransactionDateAsc(book, "Requested");
+							.findTop1ByBookIdAndTransactionTypeOrderByTransactionDateAsc(book, requestTransactionType);
 					if (requestedTransaction.isPresent()) {
 						try {
 							javaMailUtil.sendMail(requestedTransaction.get().getUserId().getEmailId(),
