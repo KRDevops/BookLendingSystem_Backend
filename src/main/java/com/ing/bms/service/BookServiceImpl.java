@@ -51,6 +51,9 @@ public class BookServiceImpl implements BookService {
 
 		log.info("Into Adding Book Service");
 
+		if( bookRepository.findByIsbn(bookAddRequestDto.getIsbn()) != null ) {
+			throw new BookException(BMSUtil.ISBNFOUND);
+		}
 		BookAddResponseDto bookAddResponseDto = new BookAddResponseDto();
 
 		if (bookAddRequestDto.getUserId() != null) {

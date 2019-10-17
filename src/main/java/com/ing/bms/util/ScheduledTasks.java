@@ -18,8 +18,7 @@ public class ScheduledTasks {
 
 	@Scheduled(cron = "0 */1 * ? * *")
 	public void run() {
-		logger.info("Message %s",Calendar.getInstance().getTime().toString());
-
+		logger.info("Executing Scheduler");
 		schedulerService.updateStatus();
 
 	}
