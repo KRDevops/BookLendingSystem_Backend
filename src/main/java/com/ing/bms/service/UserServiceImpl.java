@@ -11,6 +11,8 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.mail.MessagingException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -25,10 +27,12 @@ import com.ing.bms.dto.UserRegisterResponseDTO;
 import com.ing.bms.entity.User;
 import com.ing.bms.exception.EmailException;
 import com.ing.bms.exception.InvalidMobileNumberException;
+import com.ing.bms.exception.UserAlreadyExistException;
 import com.ing.bms.exception.UserNotFoundException;
 import com.ing.bms.repository.UserRepository;
 import com.ing.bms.util.BMSUtil;
 import com.ing.bms.util.EmailValidator;
+import com.ing.bms.util.JavaMailUtil;
 
 /**
  * @since 2019-10-16 This class includes methods for registering into book
@@ -42,8 +46,8 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepository userRepository;
 
-	@Value("${statusCode.success}")
-	private Integer statusCode;
+	@Autowired
+	JavaMailUtil javaMailUtil;
 
 	@Value("${apiKey}")
 	private String apiKey;
@@ -63,9 +67,10 @@ public class UserServiceImpl implements UserService {
 	 * @return ResponseMessage which includes success code, success/failure message.
 	 *         This method will accept all newly registering users and saves them
 	 *         into database.
+	 * @throws MessagingException
 	 */
 	public UserRegisterResponseDTO register(UserRegisterRequestDTO userRegisterRequest)
-			throws NoSuchAlgorithmException {
+			throws NoSuchAlgorithmException, MessagingException {
 		LOGGER.info("register method in UserService started");
 
 		if (!new EmailValidator().validateEmail(userRegisterRequest.getEmailId()))
@@ -74,16 +79,19 @@ public class UserServiceImpl implements UserService {
 		if (!isValidPhoneNumber(userRegisterRequest.getPhoneNumber()))
 			throw new InvalidMobileNumberException(BMSUtil.INVALID_MOBILE_NUMBER_EXCEPTION);
 
-		User register = new User();
+		Optional<User> userExist = userRepository.findByEmailId(userRegisterRequest.getEmailId());
+
+		if (userExist.isPresent())
+			throw new UserAlreadyExistException(BMSUtil.USER_ALREADY_EXISTS);
+
+		User user = new User();
 		UserRegisterResponseDTO responseDTO = new UserRegisterResponseDTO();
-		BeanUtils.copyProperties(userRegisterRequest, register);
-		register.setPassword(generatePassword(userRegisterRequest.getUserName()));
+		BeanUtils.copyProperties(userRegisterRequest, user);
+		user.setPassword(generatePassword(userRegisterRequest.getUserName()));
 
-		userRepository.save(register);
-		responseDTO.setMessage(BMSUtil.SUCCESS);
-		responseDTO.setStatusCode(statusCode);
-
-		sendSms(register.getUserName(), register.getPassword(), register.getPhoneNumber());
+		userRepository.save(user);
+		sendSms(user.getUserName(), user.getPassword(), user.getPhoneNumber());
+		javaMailUtil.sendMail(user.getEmailId(), user.getUserName(), user.getPassword());
 		LOGGER.info("register method in UserService ended");
 		return responseDTO;
 	}
@@ -129,7 +137,7 @@ public class UserServiceImpl implements UserService {
 	 * 
 	 */
 	public String sendSms(String userName, String passWord, Long phoneNumber) {
-		
+
 		LOGGER.info("sendSms method in UserService started");
 		try {
 			// Construct data

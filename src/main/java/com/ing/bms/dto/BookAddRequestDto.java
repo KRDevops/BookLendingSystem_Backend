@@ -8,13 +8,11 @@ import lombok.ToString;
 @Setter
 @ToString
 public class BookAddRequestDto {
-	
+
 	private Long userId;
 	private String bookName;
 	private String authorName;
 	private String category;
 	private Integer publicationYear;
 	private Long isbn;
-	
 }
-

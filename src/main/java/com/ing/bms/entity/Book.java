@@ -24,13 +24,12 @@ public class Book implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long bookId;
-
 	@Column(name = "author_name", nullable = false)
 	private String authorName;
-	
+
 	@Column(name = "book_name", nullable = false)
 	private String bookName;
-	
+
 	@Column(name = "category", nullable = false)
 	private String category;
 
@@ -38,7 +37,7 @@ public class Book implements Serializable {
 	private Integer publicationYear;
 
 	@Column(name = "availability_status", nullable = false)
-	private String availabilityStatus = "Available";
+	private String availabilityStatus = "Y";
 
 	@Column(name = "isbn", nullable = false, unique = true)
 	private Long isbn;

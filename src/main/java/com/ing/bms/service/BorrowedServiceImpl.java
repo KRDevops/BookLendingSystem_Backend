@@ -12,20 +12,17 @@ import com.ing.bms.repository.TransactionsRepository;
 
 @Service
 public class BorrowedServiceImpl implements BorrowedService {
-@Autowired
-TransactionsRepository transactionsRepository;
-@Autowired
-BooksRepository bookRepository;
+	@Autowired
+	TransactionsRepository transactionsRepository;
+	@Autowired
+	BooksRepository bookRepository;
+
 	@Override
-	
+
 	public List<Transaction> borrow(Long userId) {
-		User user=new User();
+		User user = new User();
 		user.setUserId(userId);
-		
-		List<Transaction> transactions=transactionsRepository.findByUserId(user);
-	
 
-	return transactions;
-
-}
+		return transactionsRepository.findByUserId(user);
+	}
 }
