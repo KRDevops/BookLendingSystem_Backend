@@ -89,6 +89,7 @@ public class BookServiceTest {
 	public void positiveTestAdd() {
 		
 		Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(user));
+		Mockito.when(bookRepository.findByIsbn(bookAddRequestDto.getIsbn())).thenReturn(null);
 		Mockito.when(bookRepository.save(Mockito.any())).thenReturn(book);
 		bookAddResponseDto=bookServiceImpl.add(bookAddRequestDto);
 		Assert.assertEquals(Long.valueOf(3), bookAddResponseDto.getBookId());
@@ -97,6 +98,14 @@ public class BookServiceTest {
 	@Test(expected=BookException.class)
 	public void negativeTestAdd() {
 		Mockito.when(userRepository.findById(Mockito.any())).thenReturn(Optional.empty());
+		Mockito.when(bookRepository.findByIsbn(bookAddRequestDto.getIsbn())).thenReturn(null);
+		bookAddResponseDto=bookServiceImpl.add(bookAddRequestDto);
+		Assert.assertEquals(null, bookAddResponseDto.getBookId());
+	}
+	
+	@Test(expected=BookException.class)
+	public void negative1TestAdd() {
+		Mockito.when(bookRepository.findByIsbn(bookAddRequestDto.getIsbn())).thenReturn(book);
 		bookAddResponseDto=bookServiceImpl.add(bookAddRequestDto);
 		Assert.assertEquals(null, bookAddResponseDto.getBookId());
 	}
