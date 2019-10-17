@@ -58,7 +58,7 @@ public class JavaMailUtil {
 	private String registrationMessage;
 
 	@Value("${message.part2}")
-	private static String msgPart2;
+	private String msgPart2;
 
 	/**
 	 * 
@@ -70,7 +70,7 @@ public class JavaMailUtil {
 	 * @author Balaji Method used for sending mail with username, password to newly
 	 *         registering user in bms
 	 */
-	public void sendMail(String recepient, String userName, String password) throws MessagingException {
+	public void sendMail(String recepient, String userName, String password, String subject) throws MessagingException {
 		LOGGER.info("sendmail in JavaMailUtil started");
 		Properties properties = new Properties();
 
@@ -85,8 +85,8 @@ public class JavaMailUtil {
 				return new javax.mail.PasswordAuthentication(myAccountEmail, gmailPassword);
 			}
 		});
-		registrationMessage = registrationMessage + msgPart + userName + msgPart2 + password;
-		Message message = prepareMessage(session, myAccountEmail, recepient, registrationMessage);
+		registrationMessage = registrationMessage + msgPart + userName +" "+ msgPart2 + password+".";
+		Message message = prepareMessage(session, myAccountEmail, recepient, registrationMessage, subject);
 		Transport.send(message);
 		LOGGER.info("sendmail in JavaMailUtil ended");
 		LOGGER.info("Message sent successfully");
@@ -102,7 +102,7 @@ public class JavaMailUtil {
 	 * @author Balaji This method is used to send email to the recepient passed in
 	 *         the argument with message specified.
 	 */
-	public void sendMail(String recepient, String message) throws MessagingException {
+	public void sendMail(String recepient, String message, String subject) throws MessagingException {
 		LOGGER.info("sendmail in JavaMailUtil started");
 		Properties properties = new Properties();
 
@@ -118,19 +118,20 @@ public class JavaMailUtil {
 			}
 		});
 
-		Message mimeMessage = prepareMessage(session, myAccountEmail, recepient, message);
+		Message mimeMessage = prepareMessage(session, myAccountEmail, recepient, message, subject);
 		Transport.send(mimeMessage);
 		LOGGER.info("sendmail in JavaMailUtil ended");
 		LOGGER.info("Message sent successfully");
 	}
 
-	private Message prepareMessage(Session session, String myAccountEmail, String recepient, String message) {
+	private Message prepareMessage(Session session, String myAccountEmail, String recepient, String message,
+			String subject) {
 		Message mimeMessage = new MimeMessage(session);
 		try {
 			mimeMessage.setFrom(new InternetAddress(myAccountEmail));
 			mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(recepient));
-			mimeMessage.setSubject(msgPart);
-			mimeMessage.setText("Hi, \n Look my email");
+			mimeMessage.setSubject(subject);
+			mimeMessage.setText(message);
 			return mimeMessage;
 		} catch (MessagingException e) {
 			LOGGER.error(e.getMessage());

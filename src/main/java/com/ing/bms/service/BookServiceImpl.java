@@ -22,11 +22,9 @@ import com.ing.bms.util.BMSUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * <<<<<<< HEAD
  * 
- * @since 2019-10-16 This class includes methods for add a book =======
  * @since 2019-10-16 This class includes methods for adding a book and
- *        request/borrow a book >>>>>>> 73dc71bacf5c4d3646c33453a483e990e8938de3
+ *        request/borrow a book
  * 
  */
 @Service
@@ -42,7 +40,7 @@ public class BookServiceImpl implements BookService {
 	@Autowired
 	TransactionRepository transactionRepository;
 
-	private static final String TRANSACTIONSTATUS = "Borrowed";
+	private static final String TRANSACTIONSTATUS = "Borrow";
 
 	/**
 	 * @param bookAddRequestDto
@@ -95,7 +93,7 @@ public class BookServiceImpl implements BookService {
 			throw new BookException(BMSUtil.BOOK_NOT_FOUND);
 		}
 		// Updating As Not Available For Borrowed Book
-		if (bookTransactionAddRequestDto.getTransactionType() == TRANSACTIONSTATUS) {
+		if (bookTransactionAddRequestDto.getTransactionType().equals(TRANSACTIONSTATUS)) {
 			book.get().setAvailabilityStatus(BMSUtil.AVAILABILITY_STATUS_N);
 			bookRepository.save(book.get());
 		}

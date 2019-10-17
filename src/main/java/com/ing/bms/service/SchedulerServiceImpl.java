@@ -40,6 +40,9 @@ public class SchedulerServiceImpl implements SchedulerService {
 	@Autowired
 	UserRepository userRepository;
 
+	@Value("${bms.available.sub}")
+	private String subject;
+
 	@Value("${status.notavailable}")
 	private String notAvailable;
 
@@ -51,6 +54,9 @@ public class SchedulerServiceImpl implements SchedulerService {
 
 	@Value("${transactionType}")
 	private String transactionType;
+
+	@Value("${requestedTransactionType}")
+	private String requestedTransactionType;
 
 	@Value("${availabilityMessage}")
 	private String availabilityMessage;
@@ -77,11 +83,11 @@ public class SchedulerServiceImpl implements SchedulerService {
 					transaction.get().setTransactionType(returnStatus);
 					transactionRepository.save(transaction.get());
 					Optional<Transaction> requestedTransaction = transactionRepository
-							.findByBookIdAndTransactionType(book, "Requested");
+							.findByBookIdAndTransactionType(book, requestedTransactionType);
 					if (requestedTransaction.isPresent()) {
 						try {
 							javaMailUtil.sendMail(requestedTransaction.get().getUserId().getEmailId(),
-									availabilityMessage);
+									availabilityMessage, subject);
 						} catch (MessagingException e) {
 							LOGGER.error(e.getMessage());
 						}
