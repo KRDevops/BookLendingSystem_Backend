@@ -7,15 +7,16 @@ import org.springframework.stereotype.Service;
 
 import com.ing.bms.entity.Transaction;
 import com.ing.bms.entity.User;
-import com.ing.bms.repository.BooksRepository;
-import com.ing.bms.repository.TransactionsRepository;
+import com.ing.bms.repository.BookRepository;
+import com.ing.bms.repository.TransactionRepository;
 
 @Service
 public class BorrowedServiceImpl implements BorrowedService {
+	
 	@Autowired
-	TransactionsRepository transactionsRepository;
+	TransactionRepository transactionsRepository;
 	@Autowired
-	BooksRepository bookRepository;
+	BookRepository bookRepository;
 
 	@Override
 
