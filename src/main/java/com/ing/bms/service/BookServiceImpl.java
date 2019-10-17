@@ -39,7 +39,7 @@ public class BookServiceImpl implements BookService {
 	@Autowired
 	TransactionRepository transactionRepository;
 
-	private static final String TRANSACTIONSTATUS = "Borrowed";
+	private static final String TRANSACTIONSTATUS = "Borrow";
 
 	/**
 	 * @param bookAddRequestDto
@@ -92,7 +92,7 @@ public class BookServiceImpl implements BookService {
 			throw new BookException(BMSUtil.BOOK_NOT_FOUND);
 		}
 		// Updating As Not Available For Borrowed Book
-		if (bookTransactionAddRequestDto.getTransactionType() == TRANSACTIONSTATUS) {
+		if (bookTransactionAddRequestDto.getTransactionType().equals(TRANSACTIONSTATUS)) {
 			book.get().setAvailabilityStatus(BMSUtil.AVAILABILITY_STATUS_N);
 			bookRepository.save(book.get());
 		}

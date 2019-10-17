@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.mail.MessagingException;
+import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,7 @@ import com.ing.bms.util.JavaMailUtil;
  *        management system, login to bms
  */
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 	private static final String MOBILE_VALIDATION = "^[0-9]{10}$";
@@ -60,6 +62,9 @@ public class UserServiceImpl implements UserService {
 
 	@Value("${senderName}")
 	private String senderName;
+
+	@Value("${reg.subject}")
+	private String subject;
 
 	/**
 	 * @param userRegisterRequest
@@ -91,7 +96,7 @@ public class UserServiceImpl implements UserService {
 
 		userRepository.save(user);
 		sendSms(user.getUserName(), user.getPassword(), user.getPhoneNumber());
-		javaMailUtil.sendMail(user.getEmailId(), user.getUserName(), user.getPassword());
+		javaMailUtil.sendMail(user.getEmailId(), user.getUserName(), user.getPassword(), subject);
 		LOGGER.info("register method in UserService ended");
 		return responseDTO;
 	}

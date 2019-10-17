@@ -42,6 +42,9 @@ public class SchedulerServiceImpl implements SchedulerService {
 	@Autowired
 	UserRepository userRepository;
 
+	@Value("${bms.available.sub}")
+	private String subject;
+
 	@Value("${status.notavailable}")
 	private String notAvailable;
 
@@ -53,6 +56,9 @@ public class SchedulerServiceImpl implements SchedulerService {
 
 	@Value("${transactionType}")
 	private String transactionType;
+
+	@Value("${requestedTransactionType}")
+	private String requestedTransactionType;
 
 	@Value("${availabilityMessage}")
 	private String availabilityMessage;
@@ -89,6 +95,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 									availabilityMessage);
 							bMSResponseDTO.setMessage(BMSUtil.GENERICSUCCESSMESSAGE);
 							bMSResponseDTO.setStatusCode(BMSUtil.GENERICSUCCESSCODE);
+
 						} catch (MessagingException e) {
 							LOGGER.error(e.getMessage());
 							bMSResponseDTO.setMessage(BMSUtil.GENERICFAILUREMESSAGE);
