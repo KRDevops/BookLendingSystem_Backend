@@ -92,7 +92,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 					if (requestedTransaction.isPresent()) {
 						try {
 							javaMailUtil.sendMail(requestedTransaction.get().getUserId().getEmailId(),
-									availabilityMessage);
+									availabilityMessage,subject);
 							bMSResponseDTO.setMessage(BMSUtil.GENERICSUCCESSMESSAGE);
 							bMSResponseDTO.setStatusCode(BMSUtil.GENERICSUCCESSCODE);
 
