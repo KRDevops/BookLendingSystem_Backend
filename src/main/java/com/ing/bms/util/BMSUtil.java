@@ -30,4 +30,5 @@ public class BMSUtil {
 	public static final String GENERICSUCCESSMESSAGE = "Success";
 	public static final Integer GENERICFAILURECODE = 404;
 	public static final String GENERICFAILUREMESSAGE = "Failed";
+	public static final Integer PAGECOUNT = 5;
 }

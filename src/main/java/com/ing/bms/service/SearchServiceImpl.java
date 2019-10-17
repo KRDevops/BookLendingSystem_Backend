@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ing.bms.dto.SearchDto;
 import com.ing.bms.entity.Book;
 import com.ing.bms.repository.BookRepository;
+import com.ing.bms.util.BMSUtil;
 
 @Service
 public class SearchServiceImpl implements SearchService {
@@ -20,7 +21,7 @@ public class SearchServiceImpl implements SearchService {
 	@Override
 	public SearchDto search(String bookName, String authorName, Integer pageNumber) {
 
-		Pageable paging = PageRequest.of(pageNumber, 1);
+		Pageable paging = PageRequest.of(pageNumber, BMSUtil.PAGECOUNT);
 
 		if (bookName != null && authorName != null) {
 			List<Book> books = booksRepository.findByAuthorNameAndBookName(authorName, bookName);
