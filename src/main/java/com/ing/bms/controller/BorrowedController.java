@@ -24,7 +24,5 @@ public class BorrowedController {
 	@GetMapping(value = "/users/{userId}/books")
 	public ResponseEntity<List<Transaction>> myBooks(@PathVariable Long userId) {
 		return new ResponseEntity<>(borrowedService.borrow(userId), HttpStatus.OK);
-
 	}
-
 }
