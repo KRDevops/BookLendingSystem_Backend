@@ -31,4 +31,5 @@ public class BMSUtil {
 	public static final Integer GENERICFAILURECODE = 404;
 	public static final String GENERICFAILUREMESSAGE = "Failed";
 	public static final Integer PAGECOUNT = 5;
+	public static final String ISBNFOUND = "DUPLICATE ISBN NUMBER FOUND";
 }

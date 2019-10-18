@@ -12,6 +12,9 @@ import com.ing.bms.entity.Book;
 public interface BookRepository extends JpaRepository<Book, Long> {
 
 	List<Book> findByAvailabilityStatus(String availabitilyStatus);
+	
+	Book findByIsbn(Long isbn);
+	
 	@Query("select c from Book c where c.authorName like %:author% or c.bookName like %:book%")
 	List<Book> findByAuthorNameOrBookName(@Param("author") String authorName,@Param("book") String bookName,Pageable paging);
 	@Query("select c from Book c where c.authorName like %:author% and c.bookName like %:book%")

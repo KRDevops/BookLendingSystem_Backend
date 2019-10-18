@@ -168,7 +168,7 @@ public class UserServiceImpl implements UserService {
 			LOGGER.info("sendSms method in UserService started");
 			return stringBuffer.toString();
 		} catch (Exception e) {
-			LOGGER.error("Error SMS " + e);
+			LOGGER.error("Error SMS {0}",e);
 			return "Error " + e;
 		}
 	}

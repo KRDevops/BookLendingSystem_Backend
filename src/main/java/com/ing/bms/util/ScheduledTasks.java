@@ -1,7 +1,5 @@
 package com.ing.bms.util;
 
-import java.util.Calendar;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +16,7 @@ public class ScheduledTasks {
 
 	@Scheduled(cron = "0 */1 * ? * *")
 	public void run() {
-		logger.info("Current time is :: " + Calendar.getInstance().getTime());
-
+		logger.info("Executing Scheduler");
 		schedulerService.updateStatus();
 
 	}
